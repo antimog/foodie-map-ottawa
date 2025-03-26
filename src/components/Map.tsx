@@ -6,6 +6,7 @@ import { foodLocations } from '../data/foodData';
 import FoodMarker from './FoodMarker';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
+import { createRoot } from 'react-dom/client';
 
 interface MapProps {
   className?: string;
@@ -65,7 +66,7 @@ const Map: React.FC<MapProps> = ({
           markerElement.className = 'marker-container';
           
           // Render our custom React marker into this div
-          const root = document.createRoot(markerElement);
+          const root = createRoot(markerElement);
           root.render(
             <FoodMarker 
               id={location.id}
@@ -108,17 +109,14 @@ const Map: React.FC<MapProps> = ({
       const markerElement = markersRef.current[location.id]?.getElement();
       if (markerElement) {
         const markerContainer = markerElement.querySelector('.marker-container');
-        const isSelected = location.id === selectedId;
-        
-        // Find the marker's internal div and update its child React component
-        const root = markerContainer ? document.createRoot(markerContainer) : null;
-        if (root) {
+        if (markerContainer) {
+          const root = createRoot(markerContainer);
           root.render(
             <FoodMarker 
               id={location.id}
               name={location.name}
               category={location.category}
-              selected={isSelected}
+              selected={location.id === selectedId}
               onClick={() => onMarkerClick(location.id)}
             />
           );
@@ -158,16 +156,3 @@ const Map: React.FC<MapProps> = ({
 };
 
 export default Map;
-
-// Import React DOM
-import { createRoot } from 'react-dom/client';
-// Declare for TypeScript
-declare global {
-  interface Document {
-    createRoot(element: HTMLElement): any;
-  }
-}
-// Extend document
-Document.prototype.createRoot = function(container: HTMLElement) {
-  return createRoot(container);
-};

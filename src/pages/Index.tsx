@@ -4,7 +4,7 @@ import NavBar from '@/components/NavBar';
 import Map from '@/components/Map';
 import SearchBar from '@/components/SearchBar';
 import FoodDetail from '@/components/FoodDetail';
-import { toast } from '@/components/ui/sonner';
+import { toast } from 'sonner'; // Import directly from sonner package instead of the UI component
 import { MapPin } from 'lucide-react';
 
 const Index = () => {
